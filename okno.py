@@ -52,9 +52,4 @@ label.place(x=400, y=380, anchor='center')  # Центрирование тек�
 canvas.bind("<Button-1>", lambda event: on_button_click())  # Клик по canvas вызывает функцию
 
 
-def main():
-    # Запуск главного цикла
-    root.mainloop()
-
-if __name__ == '__main__':
-    main()
+root.mainloop()

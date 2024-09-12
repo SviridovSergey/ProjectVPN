@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import subprocess
 import tkinter as tk
 from PIL import Image, ImageTk, ImageDraw
+import threading
 
 host = '0.0.0.0'
 port = 5001
@@ -21,12 +22,13 @@ headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
 
 print("VPN is started")
 
-def start_files():
-    subprocess.Popen(["python","client.py"])
-    print("запуск файла client.py")
-    time.sleep(0.5)
+def start_file_okno():
     subprocess.Popen(["python","okno.py"])
     print("запуск файла okno.py")
+
+def start_file_client():
+    subprocess.Popen(["python","client.py"])
+    print("запуск файла client.py")
 
 def handle_client(conn, addr):
     print(f"Подключение.. {addr}")
@@ -72,5 +74,9 @@ def main():
         #get_location(addr)
 
 if __name__ == "__main__":
-    start_files()
+    thread_client = threading.Thread(target=start_file_okno())
+    thread_vpn = threading.Thread(target=start_file_client())
+    thread_client.start()
+    time.sleep(0.5)
+    thread_vpn.start()
     main()
