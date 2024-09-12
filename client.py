@@ -9,8 +9,10 @@ def main():
 
     client_socket.sendall(b"Hello, Server!")
     data = client_socket.recv(1024)
+    message=str(input("введите сообщение: ")).encode("utf-8")
 
-    print("Received", repr(data))
+    #print("Received", repr(data))
+    print('Получено от сервера:', data.decode('utf-8'))
     client_socket.close()
 
 if __name__ == "__main__":

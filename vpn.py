@@ -1,7 +1,10 @@
 import socket
+import time
 import requests
 from bs4 import BeautifulSoup
-import okno
+import subprocess
+import tkinter as tk
+from PIL import Image, ImageTk, ImageDraw
 
 host = '0.0.0.0'
 port = 5001
@@ -16,12 +19,14 @@ proxies = {
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
     'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0'}
 
-print("Выберите на какой сервер хотите подключится,есть варианты:"
-      "США(ip:104.16.83.0,port:80);Франция(ip:212.83.138.245,port:50894")
-
-
 print("VPN is started")
 
+def start_files():
+    subprocess.Popen(["python","client.py"])
+    print("запуск файла client.py")
+    time.sleep(0.5)
+    subprocess.Popen(["python","okno.py"])
+    print("запуск файла okno.py")
 
 def handle_client(conn, addr):
     print(f"Подключение.. {addr}")
@@ -41,11 +46,11 @@ def handle_client(conn, addr):
             data = conn.recv(1024)
             if not data: break
 
-            print("Received data from {addr}: {data.decode()}".format(addr=addr, data=data))
+            print("Received data from {addr}: {data}".format(addr=addr, data=data.decode()))
             german_conn.sendall(data)  # Отправляем оригинальные данные на сервер
             response = german_conn.recv(1024)
 
-            print("Response received from server: {response.decode('utf-8')}".format(response=response))
+            print("Response received from server: {}".format(response.decode('utf-8')))
             conn.sendall(response)  # Отправляем ответ обратно клиенту
         except ConnectionResetError:
             break
@@ -63,9 +68,9 @@ def main():
         conn, addr = server_socket.accept()  # Принять новое соединение
         print(f"Connected by {addr}")
         handle_client(conn, addr)  # Передать объект соединения в функцию
-        # Вызов функции из okno.py
-        okno.main()
-
+        subprocess.Popen(["python","vpn.py"])
+        #get_location(addr)
 
 if __name__ == "__main__":
+    start_files()
     main()
