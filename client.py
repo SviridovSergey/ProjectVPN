@@ -1,8 +1,8 @@
 import socket
 
 def main():
-    host = '127.0.0.1'  # адрес вашего сервера (localhost)
-    port = 5001  # порт, который использует ваш сервер
+    host = '127.0.0.1'  # адрес сервера (localhost)
+    port = 5001  # порт, который использует сервер
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((host, port))
